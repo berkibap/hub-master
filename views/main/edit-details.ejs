@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>
+         Pulse - Hub
+      </title>
+      <link href="/assets//img/brand/favicon.png" rel="icon" type="image/png">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+      <link href="/assets//js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+      <link href="/assets//js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+      <link href="/assets//css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+   </head>
+   <body class="">
+      <% include ../partials/sidebar.ejs %>
+      <div class="main-content">
+      <% include ../partials/header.ejs %>
+      <style>
+         .fa-stack { font-size: 0.5em; }
+         i { vertical-align: middle; }
+         .bg-gradient-primary {
+         background: linear-gradient(to right, #FB4E33 0%, #DB286E 100%) !important;
+         }
+      </style>
+      <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+         <div class="container-fluid">
+            <div class="header-body">
+               <h1 class="text-white">Edit Your Details</h1>
+            </div>
+         </div>
+      </div>
+      <div class="col-12">
+      <div class="row">
+         <div class="col">
+            <div class="card shadow">
+               <div class="card-header border-0">
+                  <h3 class="mb-0"></h3>
+               </div>
+               <div class="card-body">
+                  <form action="#" id="details-form" enctype="multipart/form-data">
+                     <div class="form-group col-8">
+                        <label for="username">Username</label>
+                        <input type="text"  disabled name="username" id="username" value="<%= user.username %>" class="form-control small disabled">
+                     </div>
+                     <div class="form-group col-8">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password"  class="form-control small">
+                            <span class="text-muted">Enter only if you want to change.</span>
+                         </div>
+                    <div class="form-group col-8">
+                                <label for="password">Password (again)</label>
+                                <input type="password" name="passag" id="passag"  class="form-control small">
+                                <span class="text-muted">Enter only if you want to change.</span>
+                                </div>
+                    <div class="form-group col-8">
+                            <label for="Avatar"> Avatar </label>
+                            <input type="file" name="avatar" id="avatar"  class="form-control small">
+                            </div>
+                            <div class="form-group col-8">
+                                    <input type="submit" name="send" id="send"  class="btn btn-primary>">
+                                    </div>
+
+               </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <br>
+      <% include ../partials/footer.ejs %>
+      <script>
+      $('form').submit( e => {
+          e.preventDefault();
+          let data = new FormData();
+          data.append('avatar', document.getElementById('avatar').files[0]);
+          data.append('password', $('#password').val());
+          data.append('passag', $('#passag').val());
+          console.log(data.entries())
+          $.ajax({
+              url:'/api/user/edit-details',
+              method:'POST',
+              data: data,
+              processData: false,
+              contentType: false
+          }).done(result => {
+              if(result == 'ok')
+              {
+                  alert('Your details were edited successfully.');
+              }
+              else if(result == 'password_mismatch')
+              {
+                 alert('Your passwords are not matching!');
+              }
+              else if(result == 'reload')
+              {
+                 location.reload();
+              }
+              else{
+                 alert('An error occurred.');
+              }
+          })
+      })
+      </script>

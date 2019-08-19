@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        Pulse - Hub
+    </title>
+
+    <link href="/assets/img/brand/favicon.png" rel="icon" type="image/png">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+    <link href="/assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+    <link href="/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+    <link href="/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+</head>
+
+<body class="">
+    <% include ../partials/sidebar.ejs %>
+    <div class="main-content">
+
+        <% include ../partials/header.ejs %>
+        <style>
+            body {
+                overflow-x: hidden;
+            }
+
+            .fa-stack {
+                font-size: 0.5em;
+            }
+
+            i {
+                vertical-align: middle;
+            }
+
+            .bg-gradient-primary {
+                background: linear-gradient(to right, #FB4E33 0%, #DB286E 100%) !important;
+            }
+        </style>
+        <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+            <div class="container-fluid">
+                <div class="header-body">
+
+
+                    <div class="row justify-content-center">
+                        <div class="card col-6">
+                            <div class="card-body">
+                                <form action="/api/hdj/create-warning" method="post">
+                                    <div class="form-group">
+                                        <label for="user">User</label>
+                                        <select class="form-control" name="user" id="user">
+                                            <% users.forEach(user => {
+                                                %> <option value="<%= user.id %>"><%= user.username %></option> <%
+                                            }) %>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="points">Points</label>
+                                        <textarea class="form-control" name="review" id="review" cols="30"
+                                            rows="10">Write your review here...</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reason">Type</label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="1">Gold</option>
+                                            <option value="2">Blue</option>
+                                            <option value="3">Grey</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-default">Send Review</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include ../partials/footer.ejs %>
+        <script>
+            $(() => {
+                $('form').submit(e => {
+                    e.preventDefault();
+                    let user = $('#user').val();
+                    let review = $('#review').val();
+                    let type = $('#type').val();
+                    $.ajax({
+                        url: '/api/hdj/create-review',
+                        method: 'POST',
+                        data: {
+                            user: user,
+                            review: review,
+                            type: type
+                        }
+                    }).done(result => {
+                        if (result == 'ok') {
+                            document.querySelector('form').reset();
+                            alert(
+                                'Review added successfully! It is waiting for acceptance from a leader+.'
+                            );
+                        }
+                    })
+                })
+            })
+        </script>

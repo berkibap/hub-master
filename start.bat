@@ -1,0 +1,1 @@
+set DEBUG=pulse-hub:server,pulse-hub:bot & npm start

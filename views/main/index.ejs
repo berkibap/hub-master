@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>
+    Pulse - Hub
+  </title>
+
+  <link href="./assets/img/brand/favicon.png" rel="icon" type="image/png">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+  <link href="./assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+  <link href="./assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+  <link href="./assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+</head>
+
+<body class="">
+  <% include ../partials/sidebar.ejs %>
+  <div class="main-content">
+
+    <% include ../partials/header.ejs %>
+    <style>
+      .fa-stack {
+        font-size: 0.5em;
+      }
+
+      i {
+        vertical-align: middle;
+      }
+
+      .bg-gradient-primary {
+        background: linear-gradient(to right, #FB4E33 0%, #DB286E 100%) !important;
+      }
+    </style>
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+
+
+          <div class="row">
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Current DJ</h5>
+                      <span class="h2 font-weight-bold mb-0" id="dj"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                        <i class="fas fa-user"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-danger mr-2"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Listeners</h5>
+                      <span class="h2 font-weight-bold mb-0" id="listeners"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                        <i class="fas fa-music"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-success mr-2" id="listenerGrowth"></span>
+                    <span class="text-nowrap">Since last hour</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0"> Your Likes</h5>
+                      <span class="h2 font-weight-bold mb-0" id="likes"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-red text-white rounded-circle shadow">
+                        <i class="fas fa-heart"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-success mr-2" id="likesGrowth"></span>
+                    <span class="text-nowrap"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Your Reward Points</h5>
+                      <span class="h2 font-weight-bold mb-0" id="rewardPoints"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                        <i class="fas fa-plus"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-success mr-2" id="rewardPointsGrowth"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mt--7">
+      <div class="row">
+
+        <div class="col-xl-12 mb-5 mb-xl-0">
+          <div class="card bg-gradient-white">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h6 class="text-uppercase text-light ls-1 mb-1">Pulse Hub</h6>
+                  <h2 class=" mb-0">Welcome</h2>
+                </div>
+
+              </div>
+            </div>
+            <div class="card-body">
+              Welcome to PulseHub, this is a hub created by our development team for all community tasks. Everything you
+              need to complete as a staff member is upon this hub.
+              <br>
+              Firstly, if you are new here and need any assistance please speak to your mentor or a member of your
+              department leadership group, usually the people who hire you are your departments leaders.
+              <br>
+              <br>
+              From our hub, you can access the reward system. As stated across our advertisment campagins you can earn
+              rewards and money by completing minimum expectations or going above and beyond for your department.
+              <br>
+              <br>
+              Last of all, we'd like to tell you we honestly appriiciate the fact you've taken your time to join our
+              community, we are currently the only radio community to offer rewards for hardwork and this is something
+              we are proud of.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% include ../partials/footer.ejs %>
+      <script>
+        $(() => {
+          setInterval(() => {
+            $.ajax({
+              url: '/api/dash-stats'
+            }).done(result => {
+              $('#dj').text(result.dj[0].currentDJ);
+              $('#listeners').text(result.listeners[1].now);
+              $('#listenerGrowth').html("<i class='fas fa-arrow-up text-success'></i> %" + result.listeners[
+                  1]
+                .percent);
+              $('#likes').text(result.likes[0].likes);
+
+            })
+          }, 5000);
+          $.ajax({
+            url: '/api/dash-stats'
+          }).done(result => {
+            $('#dj').text(result.dj[0].currentDJ);
+            $('#listeners').text(result.listeners[1].now);
+            $('#listenerGrowth').html("<i class='fas fa-arrow-up text-success'></i> %" + result.listeners[1]
+              .percent);
+            $('#likes').text(result.likes[0].likes);
+            $('#rewardPoints').text(result.rps[0].rewards);
+          })
+        })
+      </script>

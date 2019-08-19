@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>
+   Pulse - Hub
+  </title>
+  
+  <link href="/assets//img/brand/favicon.png" rel="icon" type="image/png">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  
+  <link href="/assets//js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+  <link href="/assets//js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+  
+  <link href="/assets//css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+</head>
+
+<body class="">
+  <% include ../partials/sidebar.ejs %>
+  <div class="main-content">
+    
+    <% include ../partials/header.ejs %>
+    <style>
+        .fa-stack { font-size: 0.5em; }
+        i { vertical-align: middle; }
+        .bg-gradient-primary {
+          background: linear-gradient(to right, #FB4E33 0%, #DB286E 100%) !important;
+        }
+      </style>
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Job Applications</h1>
+        </div>
+    </div>
+</div>
+<div class="col-12">
+    <div class="row">
+      <div id="modals"></div>
+            <div class="col">
+              <div class="card shadow">
+                <div class="card-header border-0">
+                  <h3 class="mb-0"></h3>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Job</th>
+                            <th>View</th>
+                      </tr>
+                    </thead>
+                    <tbody id="apps">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          
+<% include ../partials/footer.ejs %>
+<script>
+   let handleApp = (id) =>
+  {
+    $('tr[data-id=' + id + ']').fadeOut();
+    $.ajax({
+      url: '/api/applications/handle/' + id,
+      method:'POST'
+    }).done(resp => {
+      if(resp.message == 'ok')
+      {
+        return;
+      }
+      else {
+        alert('Please reload page.');
+      }
+    })
+  }
+  let declineApp = (id) => {
+    $('tr[data-id=' + id +']').fadeOut();
+    $.ajax({
+      url:'/api/applications/delete/' + id,
+      method:'POST'
+    }).done(resp => {
+      if(resp.message == 'ok')
+      {
+        return;
+      }
+      else {
+        alert('Please reload page.');
+      }
+    })
+  }
+  $(document).ready(() => {
+    //  <tr> <td> </td><td> </td><td> </td><td> </td><td></td><td></td><td class="text-right"> <div class="dropdown"> <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-ellipsis-v"></i> </a> <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"> <a class="dropdown-item" href="#"><i class="fas fa-user-edit"></i> Edit</a> <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Reset Password & Send Over Discord</a> <a class="dropdown-item" href="#"><i class="fas fa-user-times"></i> Fire</a> </div></div></td></tr>
+    // <td> '+ app.discord +' </td><td>'+ app.why.substr(0,20) +'</td><td>'+ app.experience.substr(0,20) +'...</td><td>'+app.anythingelse.substr(0,20)+'...</td><td>'+ app.ip + '</td><td> '+app.timestamp+' </td><td class="text-right"> <div class="dropdown"> <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-ellipsis-v"></i> </a> <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"> <a id="remove-request" class="dropdown-item" href="#" data-id="'+app.id+'" onclick="handleApp($(this).attr(\'data-id\'));"><i class="fas fa-user-check"></i> Accept App</a><a id="remove-app" class="dropdown-item" href="#" data-id="'+app.id+'" onclick="declineApp($(this).attr(\'data-id\'));"><i class="fas fa-user-times"></i> Decline</a></div></div></td>
+
+    $.ajax({
+      url: '/api/applications',
+      data: {
+        userID: '<%= user.id %>'
+      },
+      method:'POST'
+    }).done(data => {
+        data.forEach(app => {
+          app.job_type = app.job_id == '1' ? 'Radio DJ ' : 'News Reporter' ;
+          let row = $('#apps').append(' <tr data-id="'+app.id+'" id="app-'+app.id+'"> <td>'+ app.id +'</td><td>'+ app.name +'</td><td>' + app.job_type  + '</td><td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-'+app.id+'">View</td></tr>'),
+            modal = $('#modals').append('<div class="modal fade" id="modal-'+app.id+'" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Job Application: ' + app.job_type + '</h5> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div><div class="modal-body"> <b>Name:</b> <br> '+app.name+' <br> <b>Job:</b> <br> '+app.job_type+' <br> <b>Discord:</b> <br> '+app.discord+'<br> <b>Why should we hire you?:</b> <br> '+app.why+'<br> <b>And past experience?:</b> <br> '+app.experience+'<br> <b>Anything Else?:</b> <br> '+app.anythingelse+'<br> <b>IP:</b> <br> '+app.ip+'<br> <b>Date Applied:</b> <br> '+app.timestamp+'<br></div><div class="modal-footer"> <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="handleApp('+app.id+')">Accept</button> <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="declineApp('+app.id+')">Decline</button></div></div></div></div>')
+    })  
+
+  })
+ 
+})
+</script>

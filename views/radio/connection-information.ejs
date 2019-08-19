@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>
+    Pulse - Hub
+  </title>
+
+  <link href="/assets//img/brand/favicon.png" rel="icon" type="image/png">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+
+  <link href="/assets//js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
+  <link href="/assets//js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+  <link href="/assets//css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
+</head>
+
+<body class="">
+  <% include ../partials/sidebar.ejs %>
+  <div class="main-content">
+
+    <% include ../partials/header.ejs %>
+    <style>
+      .fa-stack {
+        font-size: 0.5em;
+      }
+
+      i {
+        vertical-align: middle;
+      }
+
+      .bg-gradient-primary {
+        background: linear-gradient(to right, #FB4E33 0%, #DB286E 100%) !important;
+      }
+    </style>
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <h1 class="text-white">Connection Information</h1>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col">
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div class="card-body">
+                <b>Connection Type:</b>
+                <br>MP3 (Normal)
+                <br><br>
+                <b>Quality:</b>
+                <br>Fast Resampling
+                <br><br>
+                <b>Format:</b>
+                <br> 128kb/s 44.1kHz Stereo
+                <br><br>
+                <b>Server Type:</b>
+                <br>Shoutcast</b>
+                <br><br>
+
+                <b>Server IP:</b>
+                <br><%= connection[0].ip %>
+                <br><br>
+                <b> Server Port:</b>
+                <br>
+                <%= connection[0].port %>
+                <br><br>
+                <b>Password:</b><br>
+                <%= connection[0].password%>
+                <br><br>
+                <i><b>P.S:</b>Password is only visible & can be used by you, that means if you abuse it / leak it,
+                  you'll get appropriate action taken.</i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% include ../partials/footer.ejs %>
+
+      <script>
+        let bookSlot = (day, hour, element) => {
+          $.ajax({
+            url: '/api/radio/book/' + day + '/' + hour,
+            method: 'POST',
+            beforeSend: () => {
+              $(element).text('...');
+            }
+          }).done(response => {
+            if (response == 'ok') {
+              $(element).attr('class', 'btn btn-danger');
+              $(element).text('<%= user.username %>');
+            }
+          })
+        }
+        $(document).ready(() => {
+
+          $.fn.chunk = function (size) {
+            var arr = [];
+            for (var i = 0; i < this.length; i += size) {
+              arr.push(this.slice(i, i + size));
+            }
+            return this.pushStack(arr, "chunk", size);
+          }
+          $("#break > div").chunk(12).wrap('<div class="row"></div>');
+
+        })
+      </script>
